@@ -20,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
   builder.Services.AddScoped<IReviewService, ReviewService>();
   builder.Services.AddDbContext<BookStoreDbContext>(opsBuilder =>
       opsBuilder.UseNpgsql(configuration["dbConnectionUrl"])
+      opsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("postgres"))
       );
   builder.Services.AddRouting(options => options.LowercaseUrls = true);
 }
