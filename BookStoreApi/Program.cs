@@ -2,9 +2,6 @@ using BookStoreApi.Presistence;
 using BookStoreApi.Services;
 using Microsoft.EntityFrameworkCore;
 
-var configuration = new ConfigurationBuilder().
-  AddJsonFile("./appsettings.json")
-  .Build();
 
 
 var builder = WebApplication.CreateBuilder(args);
