@@ -5,10 +5,10 @@ namespace BookStoreApi.Services
 {
   public interface IAuthService
   {
-    ErrorOr<Created> CreateUser(UserCreationDto user);
+    Task<ErrorOr<Created>> CreateUser(UserCreationDto user);
 
-    ErrorOr<int> SignIn(UserSignInDto user);
+    Task<IResult> SignIn(UserSignInDto user);
 
-    ErrorOr<Updated> UpdateUserRole(Guid userId, int role);
+    ErrorOr<Updated> UpdateUserRole(Guid userId, string role);
   }
 }

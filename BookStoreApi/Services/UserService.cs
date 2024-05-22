@@ -46,7 +46,7 @@ namespace BookStoreApi.Services
     public ErrorOr<Updated> UpdateUser(Guid userId, UserDto updateUserDto)
     {
       var u = _context.Users.Find(userId);
-      u.Username = updateUserDto.Username;
+      u.Name = updateUserDto.Username;
       u.Email = updateUserDto.Email;
       _context.Users.Update(u);
       _context.SaveChanges();

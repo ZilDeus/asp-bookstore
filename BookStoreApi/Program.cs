@@ -22,8 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
   builder.Services.AddScoped<IAuthorService, AuthorService>();
   builder.Services.AddScoped<IReportService, ReportService>();
   builder.Services.AddScoped<IReviewService, ReviewService>();
-  builder.Services.AddDbContext<BookStoreDbContext>(opsBuilder =>
-      opsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("postgres"))
+  builder.Services.AddDbContext<BookStoreDbContext>(optionsBuilder =>
+      optionsBuilder.UseSqlite(builder.Configuration.GetConnectionString("sqlite"))
       );
   builder.Services.AddRouting(options => options.LowercaseUrls = true);
 

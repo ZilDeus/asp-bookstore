@@ -1,5 +1,6 @@
 using BookStoreApi.Dto;
 using BookStoreApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreApi.Controllers
@@ -17,26 +18,33 @@ namespace BookStoreApi.Controllers
     [HttpPost("sign-up")]
     public IActionResult CreateUser(UserCreationDto user)
     {
-      return _service.CreateUser(user).Match(
-          ok => Ok("user created successfully"),
-          errors => Problem(errors.ToString())
-          );
+      return Ok(_service.CreateUser(user));
     }
     [HttpPost("log-in")]
     public IActionResult logIn(UserSignInDto user)
     {
-      return _service.SignIn(user).Match(
-          ok => Ok(ok),
-          errors => Problem(errors.ToString())
-          );
+      return Ok(_service.SignIn(user));
     }
-    [HttpPost("{userId}/{role}")]
-    public IActionResult ChangeUserRole(Guid userId, int role)
+
+    [HttpGet("admin")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult AdminTest()
     {
-      return _service.UpdateUserRole(userId, role).Match(
-          ok => Ok("user role-update successfully"),
-          errors => Problem(errors.ToString())
-          );
+      return Ok("hello admin");
+    }
+
+    [HttpGet("manager")]
+    [Authorize(Roles = "Manager")]
+    public IActionResult ManagerTest()
+    {
+      return Ok("hello manager");
+    }
+
+    [HttpGet("user")]
+    [Authorize(Roles = "User")]
+    public IActionResult UserTest()
+    {
+      return Ok("hello user");
     }
   }
 }
