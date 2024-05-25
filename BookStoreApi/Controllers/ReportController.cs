@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreApi.Controllers
 {
+  [ApiController]
   [Route("/api/[controller]")]
   public class ReportController : ControllerBase
   {

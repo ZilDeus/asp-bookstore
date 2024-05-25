@@ -4,39 +4,39 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreApi.Controllers
 {
+  [ApiController]
   [Route("/api/[controller]")]
   public class AuthController : ControllerBase
   {
     private readonly IAuthService _service;
 
-    public AuthController(AuthService service)
+    public AuthController(IAuthService service)
     {
       _service = service;
     }
 
-    [HttpPost("sign-up")]
-    public IActionResult CreateUser(UserCreationDto user)
+    [HttpPost("register")]
+    public async Task<IActionResult> CreateUser(UserRegistrationDto registrationDto)
     {
-      return _service.CreateUser(user).Match(
-          ok => Ok("user created successfully"),
-          errors => Problem(errors.ToString())
+      if (!ModelState.IsValid)
+        return Problem("invalid input");
+
+      var userCreationResult = await _service.CreateUser(registrationDto);
+      return userCreationResult.Match(
+          ok => Ok("user created succesfully"),
+          errors => Problem(errors.First().Description)
           );
     }
     [HttpPost("log-in")]
-    public IActionResult logIn(UserSignInDto user)
+    public async Task<IActionResult> logIn(UserLogInDto LogInDto)
     {
-      return _service.SignIn(user).Match(
-          ok => Ok(ok),
-          errors => Problem(errors.ToString())
-          );
-    }
-    [HttpPost("{userId}/{role}")]
-    public IActionResult ChangeUserRole(Guid userId, int role)
-    {
-      return _service.UpdateUserRole(userId, role).Match(
-          ok => Ok("user role-update successfully"),
-          errors => Problem(errors.ToString())
-          );
+      if (!ModelState.IsValid)
+        return Problem("invalid input");
+      var userLogIn = await _service.LogIn(LogInDto);
+      return userLogIn.Match(
+          data => Ok(data),
+          errors => Problem(errors.First().Description)
+      );
     }
   }
 }
