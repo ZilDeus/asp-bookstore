@@ -1,4 +1,5 @@
 using BookStoreApi.Dto;
+using BookStoreApi.Filters;
 using BookStoreApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +25,9 @@ namespace BookStoreApi.Controllers
           );
     }
     [HttpGet]
-    public IActionResult GetReports()
+    public IActionResult GetReports([FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetReports().Match(
+      return _service.GetReports(paginationFilter).Match(
           ok => Ok(ok),
           error => Problem(error.ToString())
           );

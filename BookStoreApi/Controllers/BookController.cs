@@ -1,4 +1,5 @@
 using BookStoreApi.Dto;
+using BookStoreApi.Filters;
 using BookStoreApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,9 +27,9 @@ namespace BookStoreApi.Controllers
     }
 
     [HttpGet]
-    public IActionResult GetBooks()
+    public IActionResult GetBooks([FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetBooks().Match(
+      return _service.GetBooks(paginationFilter).Match(
           ok => Ok(ok),
           errors => Problem(errors.ToString())
           );
@@ -62,18 +63,18 @@ namespace BookStoreApi.Controllers
     }
 
     [HttpGet("{bookId}/review")]
-    public IActionResult GetBookReviews(Guid bookId)
+    public IActionResult GetBookReviews(Guid bookId, [FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetBookReviews(bookId).Match(
+      return _service.GetBookReviews(bookId, paginationFilter).Match(
           ok => Ok(ok),
           errors => Problem(errors.ToString())
           );
     }
 
     [HttpGet("{bookId}/report")]
-    public IActionResult GetBookReports(Guid bookId)
+    public IActionResult GetBookReports(Guid bookId, [FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetBookReviews(bookId).Match(
+      return _service.GetBookReviews(bookId, paginationFilter).Match(
           ok => Ok(ok),
           errors => Problem(errors.ToString())
           );

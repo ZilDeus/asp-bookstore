@@ -1,4 +1,5 @@
 using BookStoreApi.Dto;
+using BookStoreApi.Filters;
 using ErrorOr;
 
 namespace BookStoreApi.Services
@@ -7,7 +8,7 @@ namespace BookStoreApi.Services
   {
     ErrorOr<Created> CreateReport(Guid userId, ReportCreationDto report);
 
-    ErrorOr<List<ReportDto>> GetReports();
+    ErrorOr<List<ReportDto>> GetReports(PaginationFilter paginationFilter);
 
     ErrorOr<ReportDto> GetReport(Guid reportId);
 

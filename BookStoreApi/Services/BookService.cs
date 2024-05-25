@@ -1,6 +1,7 @@
 using AutoMapper;
 using BookStoreApi.Dto;
 using BookStoreApi.Entities;
+using BookStoreApi.Filters;
 using BookStoreApi.Presistence;
 using ErrorOr;
 
@@ -42,19 +43,28 @@ namespace BookStoreApi.Services
       return mapper.Map<BookDto>(_context.Books.Find(bookId));
     }
 
-    public ErrorOr<List<ReportDto>> GetBookReports(Guid bookId)
+    public ErrorOr<List<ReportDto>> GetBookReports(Guid bookId, PaginationFilter paginationFilter)
     {
-      return mapper.Map<List<ReportDto>>(_context.Books.Find(bookId).Reports.ToList());
+      return mapper.Map<List<ReportDto>>(_context.Books.Find(bookId).Reports
+          .Skip(paginationFilter.PageSize * paginationFilter.CurrentPage - paginationFilter.PageSize)
+          .Take(paginationFilter.PageSize)
+          .ToList());
     }
 
-    public ErrorOr<List<ReviewDto>> GetBookReviews(Guid bookId)
+    public ErrorOr<List<ReviewDto>> GetBookReviews(Guid bookId, PaginationFilter paginationFilter)
     {
-      return mapper.Map<List<ReviewDto>>(_context.Books.Find(bookId).Reviews.ToList());
+      return mapper.Map<List<ReviewDto>>(_context.Books.Find(bookId).Reviews
+          .Skip(paginationFilter.PageSize * paginationFilter.CurrentPage - paginationFilter.PageSize)
+          .Take(paginationFilter.PageSize)
+          .ToList());
     }
 
-    public ErrorOr<List<BookDto>> GetBooks()
+    public ErrorOr<List<BookDto>> GetBooks(PaginationFilter paginationFilter)
     {
-      return mapper.Map<List<BookDto>>(_context.Books.ToList());
+      return mapper.Map<List<BookDto>>(_context.Books
+          .Skip(paginationFilter.PageSize * paginationFilter.CurrentPage - paginationFilter.PageSize)
+          .Take(paginationFilter.PageSize)
+          .ToList());
     }
 
     public ErrorOr<Updated> UpdateBook(Guid bookId, BookDto updateBookDto)

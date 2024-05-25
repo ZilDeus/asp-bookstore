@@ -1,4 +1,5 @@
 using BookStoreApi.Dto;
+using BookStoreApi.Filters;
 using BookStoreApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,15 +22,15 @@ namespace BookStoreApi.Controllers
     {
       return _service.CreateAuthor(author).Match(
           ok => Ok("author created successfully"),
-          errors => Problem(errors.ToString())
+          errors => Problem(errors.First().Description)
           );
     }
     [HttpGet]
-    public IActionResult GetAuthors()
+    public IActionResult GetAuthors([FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetAuthors().Match(
+      return _service.GetAuthors(paginationFilter).Match(
           ok => Ok(ok),
-          errors => Problem(errors.ToString())
+          errors => Problem(errors.First().Description)
           );
     }
     [HttpGet("{authorId}")]
@@ -37,7 +38,7 @@ namespace BookStoreApi.Controllers
     {
       return _service.GetAuthor(authorId).Match(
           ok => Ok(ok),
-          errors => Problem(errors.ToString())
+          errors => Problem(errors.First().Description)
           );
     }
 
@@ -46,7 +47,7 @@ namespace BookStoreApi.Controllers
     {
       return _service.DeleteAuthor(authorId).Match(
           ok => Ok("author deleted successfully"),
-          errors => Problem(errors.ToString())
+          errors => Problem(errors.First().Description)
           );
     }
 
@@ -56,34 +57,34 @@ namespace BookStoreApi.Controllers
 
       return _service.UpdateAuthor(authorId, authorUpdateDto).Match(
           ok => Ok("author updated successfully"),
-          errors => Problem(errors.ToString())
+          errors => Problem(errors.First().Description)
           );
     }
 
     [HttpGet("{authorId}/review")]
-    public IActionResult GetAuthorReviews(Guid authorId)
+    public IActionResult GetAuthorReviews(Guid authorId, [FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetAuthorReviews(authorId).Match(
+      return _service.GetAuthorReviews(authorId, paginationFilter).Match(
           ok => Ok(ok),
-          errors => Problem(errors.ToString())
+          errors => Problem(errors.First().Description)
           );
     }
 
     [HttpGet("{authorId}/books")]
-    public IActionResult GetAuthorBooks(Guid authorId)
+    public IActionResult GetAuthorBooks(Guid authorId, [FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetAuthorBooks(authorId).Match(
+      return _service.GetAuthorBooks(authorId, paginationFilter).Match(
           ok => Ok(ok),
-          errors => Problem(errors.ToString())
+          errors => Problem(errors.First().Description)
           );
     }
 
     [HttpGet("{authorId}/report")]
-    public IActionResult GetAuthorReports(Guid authorId)
+    public IActionResult GetAuthorReports(Guid authorId, [FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetAuthorReports(authorId).Match(
+      return _service.GetAuthorReports(authorId, paginationFilter).Match(
           ok => Ok(ok),
-          errors => Problem(errors.ToString())
+          errors => Problem(errors.First().Description)
           );
     }
   }

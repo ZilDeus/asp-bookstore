@@ -1,4 +1,5 @@
 using BookStoreApi.Dto;
+using BookStoreApi.Filters;
 using BookStoreApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,9 +28,9 @@ namespace BookStoreApi.Controllers
 
 
     [HttpGet]
-    public IActionResult GetReviews()
+    public IActionResult GetReviews([FromQuery] PaginationFilter paginationFilter)
     {
-      return _service.GetReviews().Match(
+      return _service.GetReviews(paginationFilter).Match(
           ok => Ok(ok),
           error => Problem(error.ToString())
           );

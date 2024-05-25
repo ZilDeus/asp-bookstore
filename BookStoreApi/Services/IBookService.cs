@@ -1,4 +1,5 @@
 using BookStoreApi.Dto;
+using BookStoreApi.Filters;
 using ErrorOr;
 
 namespace BookStoreApi.Services
@@ -7,7 +8,7 @@ namespace BookStoreApi.Services
   {
     ErrorOr<Created> CreateBook(BookCreationDto book);
 
-    ErrorOr<List<BookDto>> GetBooks();
+    ErrorOr<List<BookDto>> GetBooks(PaginationFilter paginationFilter);
 
     ErrorOr<BookDto> GetBook(Guid bookId);
 
@@ -15,8 +16,8 @@ namespace BookStoreApi.Services
 
     ErrorOr<Updated> UpdateBook(Guid bookId, BookDto updateBookDto);
 
-    ErrorOr<List<ReviewDto>> GetBookReviews(Guid bookId);
+    ErrorOr<List<ReviewDto>> GetBookReviews(Guid bookId, PaginationFilter paginationFilter);
 
-    ErrorOr<List<ReportDto>> GetBookReports(Guid bookId);
+    ErrorOr<List<ReportDto>> GetBookReports(Guid bookId, PaginationFilter paginationFilter);
   }
 }

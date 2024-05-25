@@ -1,6 +1,7 @@
 using AutoMapper;
 using BookStoreApi.Dto;
 using BookStoreApi.Entities;
+using BookStoreApi.Filters;
 using BookStoreApi.Presistence;
 using ErrorOr;
 
@@ -41,9 +42,12 @@ namespace BookStoreApi.Services
       return mapper.Map<ReviewDto>(_context.Reviews.Find(reviewId));
     }
 
-    public ErrorOr<List<ReviewDto>> GetReviews()
+    public ErrorOr<List<ReviewDto>> GetReviews(PaginationFilter paginationFilter)
     {
-      return mapper.Map<List<ReviewDto>>(_context.Reviews.ToList());
+      return mapper.Map<List<ReviewDto>>(_context.Reviews
+          .Skip(paginationFilter.PageSize * paginationFilter.CurrentPage - paginationFilter.PageSize)
+          .Take(paginationFilter.PageSize)
+          .ToList());
     }
 
     public ErrorOr<Updated> UpdateReview(Guid reviewId, ReviewDto updateReviewDto)

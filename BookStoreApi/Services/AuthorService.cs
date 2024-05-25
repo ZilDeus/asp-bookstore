@@ -1,6 +1,7 @@
 using AutoMapper;
 using BookStoreApi.Dto;
 using BookStoreApi.Entities;
+using BookStoreApi.Filters;
 using BookStoreApi.Presistence;
 using ErrorOr;
 
@@ -41,24 +42,38 @@ namespace BookStoreApi.Services
       return mapper.Map<AuthorDto>(_context.Authors.Find(authorId));
     }
 
-    public ErrorOr<List<BookDto>> GetAuthorBooks(Guid authorId)
+    public ErrorOr<List<BookDto>> GetAuthorBooks(Guid authorId, PaginationFilter paginationFilter)
     {
-      return mapper.Map<List<BookDto>>(_context.Authors.Find(authorId).Books.ToList());
+      return mapper.Map<List<BookDto>>(_context.Authors.Find(authorId).Books
+          .Skip(paginationFilter.PageSize * paginationFilter.CurrentPage - paginationFilter.PageSize)
+          .Take(paginationFilter.PageSize)
+          .ToList()
+          );
     }
 
-    public ErrorOr<List<ReportDto>> GetAuthorReports(Guid authorId)
+    public ErrorOr<List<ReportDto>> GetAuthorReports(Guid authorId, PaginationFilter paginationFilter)
     {
-      return mapper.Map<List<ReportDto>>(_context.Authors.Find(authorId).Reports.ToList());
+      return mapper.Map<List<ReportDto>>(_context.Authors.Find(authorId).Reports
+          .Skip(paginationFilter.PageSize * paginationFilter.CurrentPage - paginationFilter.PageSize)
+          .Take(paginationFilter.PageSize)
+          .ToList());
     }
 
-    public ErrorOr<List<ReviewDto>> GetAuthorReviews(Guid authorId)
+    public ErrorOr<List<ReviewDto>> GetAuthorReviews(Guid authorId, PaginationFilter paginationFilter)
     {
-      return mapper.Map<List<ReviewDto>>(_context.Authors.Find(authorId).Reviews.ToList());
+      return mapper.Map<List<ReviewDto>>(_context.Authors.Find(authorId).Reviews
+          .Skip(paginationFilter.PageSize * paginationFilter.CurrentPage - paginationFilter.PageSize)
+          .Take(paginationFilter.PageSize)
+          .ToList());
     }
 
-    public ErrorOr<List<AuthorDto>> GetAuthors()
+    public ErrorOr<List<AuthorDto>> GetAuthors(PaginationFilter paginationFilter)
     {
-      return mapper.Map<List<AuthorDto>>(_context.Authors.ToList());
+      return mapper.Map<List<AuthorDto>>(_context.Authors
+          .Skip(paginationFilter.PageSize * paginationFilter.CurrentPage - paginationFilter.PageSize)
+          .Take(paginationFilter.PageSize)
+          .ToList()
+          );
     }
 
     public ErrorOr<Updated> UpdateAuthor(Guid authorId, AuthorDto author)

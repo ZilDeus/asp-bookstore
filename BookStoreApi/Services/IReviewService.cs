@@ -1,4 +1,5 @@
 using BookStoreApi.Dto;
+using BookStoreApi.Filters;
 using ErrorOr;
 
 namespace BookStoreApi.Services
@@ -7,7 +8,7 @@ namespace BookStoreApi.Services
   {
     ErrorOr<Created> CreateReview(Guid userId, ReviewCreationDto review);
 
-    ErrorOr<List<ReviewDto>> GetReviews();
+    ErrorOr<List<ReviewDto>> GetReviews(PaginationFilter paginationFilter);
 
     ErrorOr<ReviewDto> GetReview(Guid reviewId);
 
