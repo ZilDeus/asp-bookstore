@@ -88,19 +88,21 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 {
   // Configure the HTTP request pipeline.
-  if (app.Environment.IsDevelopment())
+  //if (app.Environment.IsDevelopment())
+  //{
+  app.UseSwagger();
+  app.UseSwaggerUI(c =>
   {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-      c.DocExpansion(DocExpansion.None);
-    });
-  }
+    c.DocExpansion(DocExpansion.None);
+  });
+  //}
   app.MapControllers();
   app.UseHttpsRedirection();
 
   app.UseAuthentication();
   app.UseAuthorization();
+
+  //SeedData.PopulateDb(app);
 
   app.Run();
 }

@@ -11,7 +11,7 @@ namespace BookStoreApi.Entities
 
     [Required]
     public int Score { get; set; } = 0;
-    public string? Content { get; set; }
+    public string Content { get; set; }
 
     public Book Book { get; set; } = null!;
 
