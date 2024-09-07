@@ -13,6 +13,11 @@ services:
     networks:
         - db
     restart: unless-stopped
+  backend:
+    container_name: bookstore-api
+    build: .
+    ports:
+      - 5000:5000
 networks:
   db:
     driver: bridge
